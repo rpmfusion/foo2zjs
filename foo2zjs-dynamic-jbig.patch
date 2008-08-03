@@ -3906,9 +3906,9 @@ diff -uNr foo2zjs-jbig/jbig_tab.c foo2zjs/jbig_tab.c
 -  2,0,2,0,2,1,2,1,2,2,2,0,2,2,2,1,2,2,2,2,2,2,2,2,2,2,2,2,2,2,2,2,
 -  2,2,2,2,2,2,2,2,2,2,2,0,2,2,2,1,2,2,2,2,2,2,2,2,2,2,2,2,2,2,2,2,
 -};
---- foo2zjs/Makefile.orig	2007-07-18 19:34:22.000000000 +0100
-+++ foo2zjs/Makefile	2007-08-29 16:30:04.000000000 +0100
-@@ -89,9 +89,6 @@ FILES	=	\
+--- foo2zjs/Makefile.orig	2008-03-21 15:21:41.000000000 +0000
++++ foo2zjs/Makefile	2008-03-26 09:32:51.000000000 +0000
+@@ -122,9 +122,6 @@ FILES	=	\
  		Makefile \
  		foo2zjs.c \
  		foo2zjs.1in \
@@ -3918,18 +3918,18 @@ diff -uNr foo2zjs-jbig/jbig_tab.c foo2zjs/jbig_tab.c
  		zjsdecode.c \
  		zjsdecode.1in \
  		zjs.h \
-@@ -182,7 +179,7 @@ MANPAGES+=	foo2xqx-wrapper.1 foo2xqx.1 x
- MANPAGES+=	foo2lava-wrapper.1 foo2lava.1 lavadecode.1
- MANPAGES+=	foo2qpdl-wrapper.1 foo2qpdl.1 qpdldecode.1
- MANPAGES+=	opldecode.1
+@@ -239,7 +236,7 @@ MANPAGES+=	foo2qpdl-wrapper.1 foo2qpdl.1
+ MANPAGES+=	foo2slx-wrapper.1 foo2slx.1 slxdecode.1
+ MANPAGES+=	foo2hiperc-wrapper.1 foo2hiperc.1 hipercdecode.1
+ MANPAGES+=	foo2zjs-pstops.1 arm2hpdl.1 usb_printerid.1
 -LIBJBG	=	jbig.o jbig_tab.o
 +LIBJBG	=	-ljbig
  BINPROGS=
  
  ifeq ($(UNAME),Linux)
-@@ -305,23 +302,23 @@ all-test:
- 	# ... OK!
- 	#
+@@ -376,29 +373,29 @@ all-done:
+ 	@echo "yourself."
+ 
  
 -foo2zjs: foo2zjs.o $(LIBJBG)
 +foo2zjs: foo2zjs.o
@@ -3952,22 +3952,34 @@ diff -uNr foo2zjs-jbig/jbig_tab.c foo2zjs/jbig_tab.c
 +foo2qpdl: foo2qpdl.o
  	$(CC) $(CFLAGS) -o $@ foo2qpdl.o $(LIBJBG)
  
--zjsdecode: zjsdecode.o $(LIBJBG)
-+zjsdecode: zjsdecode.o
- 	$(CC) $(CFLAGS) zjsdecode.o $(LIBJBG) -o $@
+-foo2oak: foo2oak.o $(LIBJBG)
++foo2oak: foo2oak.o
+ 	$(CC) $(CFLAGS) -o $@ foo2oak.o $(LIBJBG)
  
- foo2zjs-wrapper: foo2zjs-wrapper.in Makefile
-@@ -364,25 +361,25 @@ getweb: getweb.in Makefile
+-foo2slx: foo2slx.o $(LIBJBG)
++foo2slx: foo2slx.o
+ 	$(CC) $(CFLAGS) -o $@ foo2slx.o $(LIBJBG)
+ 
+-foo2hiperc: foo2hiperc.o $(LIBJBG)
++foo2hiperc: foo2hiperc.o
+ 	$(CC) $(CFLAGS) -o $@ foo2hiperc.o $(LIBJBG)
+ 
+ 
+@@ -461,37 +458,37 @@ getweb: getweb.in Makefile
  all-icc2ps:
  	cd icc2ps; $(MAKE) all
- 
--okidecode: okidecode.o $(LIBJBG)
-+okidecode: okidecode.o
- 	$(CC) $(CFLAGS) okidecode.o $(LIBJBG) -o $@
  
 -ok: ok.o $(LIBJBG)
 +ok: ok.o
  	$(CC) $(CFLAGS) ok.o $(LIBJBG) -o $@
+ 
+-zjsdecode: zjsdecode.o $(LIBJBG)
++zjsdecode: zjsdecode.o
+ 	$(CC) $(CFLAGS) zjsdecode.o $(LIBJBG) -o $@
+ 
+-hipercdecode: hipercdecode.o $(LIBJBG)
++hipercdecode: hipercdecode.o
+ 	$(CC) $(CFLAGS) hipercdecode.o $(LIBJBG) -o $@
  
 -splcdecode: splcdecode.o $(LIBJBG)
 +splcdecode: splcdecode.o
@@ -3989,8 +4001,20 @@ diff -uNr foo2zjs-jbig/jbig_tab.c foo2zjs/jbig_tab.c
 +opldecode: opldecode.o
  	$(CC) $(CFLAGS) -g opldecode.o $(LIBJBG) -o $@
  
+-oakdecode: oakdecode.o $(LIBJBG)
++oakdecode: oakdecode.o
+ 	$(CC) $(CFLAGS) -g oakdecode.o $(LIBJBG) -o $@
+ 
+-slxdecode: slxdecode.o $(LIBJBG)
++slxdecode: slxdecode.o
+ 	$(CC) $(CFLAGS) slxdecode.o $(LIBJBG) -o $@
+ 
+-gipddecode: gipddecode.o $(LIBJBG)
++gipddecode: gipddecode.o
+ 	$(CC) $(CFLAGS) gipddecode.o $(LIBJBG) -o $@
+ 
  #
-@@ -708,17 +705,12 @@ clean:
+@@ -925,21 +922,18 @@ clean:
  #
  # Header dependencies
  #
@@ -3998,37 +4022,29 @@ diff -uNr foo2zjs-jbig/jbig_tab.c foo2zjs/jbig_tab.c
 -foo2zjs.o: zjs.h jbig.h
 -jbig.o: jbig.h
 -foo2hp.o: zjs.h jbig.h cups.h
--xqxdecode.o: xqx.h jbig.h
 -foo2xqx.o: xqx.h jbig.h
--lavadecode.o: jbig.h
 -foo2lava.o: jbig.h
--qpdldecode.o: jbig.h
 -foo2qpdl.o: jbig.h qpdl.h
+-foo2slx.o: slx.h jbig.h
+-foo2hiperc.o: jbig.h hiperc.h
+-hipercdecode.o: hiperc.h jbig.h
+-lavadecode.o: jbig.h
+-qpdldecode.o: jbig.h
 -opldecode.o: jbig.h
+-slxdecode.o: slx.h jbig.h
+-xqxdecode.o: xqx.h jbig.h
 +zjsdecode.o: zjs.h
 +foo2zjs.o: zjs.h
++jbig.o:
 +foo2hp.o: zjs.h cups.h
-+xqxdecode.o: xqx.h
 +foo2xqx.o: xqx.h
++foo2lava.o:
 +foo2qpdl.o: qpdl.h
++foo2slx.o: slx.h
++foo2hiperc.o: hiperc.h
++hipercdecode.o: hiperc.h
++slxdecode.o: slx.h
++xqxdecode.o: xqx.h
  
  #
  # foo2* Regression tests
-@@ -1168,7 +1160,7 @@ foo2oak-wrapper: foo2oak-wrapper.in Make
- 
- SYSNAME := $(shell uname -n)
- ifeq ($(SYSNAME),ipcroe.rkkda.com)
--foo2oak_$(MACH).o: oak.h jbig.h foo2oak.c
-+foo2oak_$(MACH).o: oak.h foo2oak.c
- 	cp -a foo2oak.c foo2oak_$(MACH).c
- 	$(CC) $(CFLAGS) -c foo2oak_$(MACH).c
- oakdecode_$(MACH).o: oak.h oakdecode.c
-@@ -1176,7 +1168,7 @@ oakdecode_$(MACH).o: oak.h oakdecode.c
- 	$(CC) $(CFLAGS) -c oakdecode_$(MACH).c
- endif
- ifeq ($(SYSNAME),amd.rkkda.org)
--foo2oak_$(MACH).o: oak.h jbig.h foo2oak.c
-+foo2oak_$(MACH).o: oak.h foo2oak.c
- 	cp -a foo2oak.c foo2oak_$(MACH).c
- 	$(CC) $(CFLAGS) -c foo2oak_$(MACH).c
- oakdecode_$(MACH).o: oak.h oakdecode.c

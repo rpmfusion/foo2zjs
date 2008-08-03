@@ -1,6 +1,6 @@
 Name:           foo2zjs
-Version:        0.20070822
-Release:        2%{?dist}
+Version:        0.20080324
+Release:        1%{?dist}
 Summary:        Linux printer driver for ZjStream protocol
 
 Group:          System Environment/Libraries
@@ -30,6 +30,16 @@ Requires:       lcms foo2zjs
 
 %package -n foo2qpdl
 Summary:        Linux printer driver for Samsung CLP-300, CLP-600, CLP-3160
+Group:          System Environment/Libraries
+Requires:       lcms foo2zjs
+
+%package -n foo2slx
+Summary:        Linux printer driver for SLX protocol (Lexmark C500n etc.)
+Group:          System Environment/Libraries
+Requires:       lcms foo2zjs
+
+%package -n foo2hiperc
+Summary:        Linux printer driver for HIPERC protocol (Oki C3400n etc.)
 Group:          System Environment/Libraries
 Requires:       lcms foo2zjs
 
@@ -111,8 +121,35 @@ of many wire protocols that are in use today, such as Postscript, PCL,
 Epson, ZjStream, etc.
 
 Users of this package are requested to visit the author's web page at
-http://foo2lava.rkkda.com/ and consider contributing.
+http://foo2qpdl.rkkda.com/ and consider contributing.
 
+%description -n foo2slx
+foo2slx is an open source printer driver for printers that use the
+Software Imaging K.K. SLX wire protocol for their print data, such as
+the Lexmark C500n. These printers are often erroneously referred to as
+winprinters or GDI printers. However, Microsoft GDI only mandates the
+API between an application and the printer driver, not the protocol on
+the wire between the printer driver and the printer. In fact, SLX
+printers are raster printers which happen to use a very efficient wire
+protocol which was developed by Zenographics and cloned by Software
+Imaging K.K. and licensed by most major printer manufacturers for at
+least some of their product lines. SLX is just one of many wire
+protocols that are in use today, such as Postscript, PCL, Epson,
+ZjStream, etc.
+
+Users of this package are requested to visit the author's web page at
+http://foo2slx.rkkda.com/ and consider contributing.
+
+%description -n foo2hiperc
+foo2hiperc is an open source printer driver for printers that use the
+HIPERC wire protocol for their print data, such as the Oki C3400n and
+the Oki C5500n.
+
+NOTE: This driver is currently in Alpha and supports uncompressed mode
+only.
+
+Users of this package are requested to visit the author's web page at
+http://foo2hiperc.rkkda.com/ and consider contributing.
 
 %prep
 %setup -q -n foo2zjs
@@ -150,6 +187,8 @@ rm -f $RPM_BUILD_ROOT%{_datadir}/foomatic/db/source/printer/HP-Color_LaserJet_15
 rm -f $RPM_BUILD_ROOT/usr/share/cups/model/Generic-OAKT_Printer.ppd.gz
 rm -f $RPM_BUILD_ROOT/usr/share/cups/model/HP-Color_LaserJet_1500.ppd.gz
 
+# Remove man page for usb_printerid which we don't ship
+rm -f $RPM_BUILD_ROOT%{_mandir}/man1/usb_printerid.1
 
 
 %clean
@@ -163,22 +202,15 @@ rm -rf $RPM_BUILD_ROOT
 %{_mandir}/man1/*zjs*
 %{_datadir}/foomatic/db/source/driver/foo2zjs.xml
 %{_datadir}/foomatic/db/source/opt/foo2zjs*.xml
+%{_datadir}/foomatic/db/source/opt/foo2xxx*.xml
 %{_datadir}/foomatic/db/source/printer/Generic-ZjStream_Printer.xml
-%{_datadir}/foomatic/db/source/printer/HP-LaserJet_1000.xml
-%{_datadir}/foomatic/db/source/printer/HP-LaserJet_1005.xml
-%{_datadir}/foomatic/db/source/printer/HP-LaserJet_1018.xml
-%{_datadir}/foomatic/db/source/printer/HP-LaserJet_1020.xml
-%{_datadir}/foomatic/db/source/printer/HP-LaserJet_1022.xml
+%{_datadir}/foomatic/db/source/printer/HP-LaserJet_1*.xml
 %{_datadir}/foomatic/db/source/printer/Minolta-Color_PageWorks_Pro_L.xml
 %{_datadir}/foomatic/db/source/printer/Minolta-magicolor_2200_DL.xml
 %{_datadir}/foomatic/db/source/printer/Minolta-magicolor_2300_DL.xml
 %{_datadir}/foomatic/db/source/printer/Minolta-magicolor_2430_DL.xml
 %{_datadir}/cups/model/Generic-ZjStream_Printer.ppd.gz
-%{_datadir}/cups/model/HP-LaserJet_1000.ppd.gz
-%{_datadir}/cups/model/HP-LaserJet_1005.ppd.gz
-%{_datadir}/cups/model/HP-LaserJet_1018.ppd.gz
-%{_datadir}/cups/model/HP-LaserJet_1020.ppd.gz
-%{_datadir}/cups/model/HP-LaserJet_1022.ppd.gz
+%{_datadir}/cups/model/HP-LaserJet_1*.ppd.gz
 %{_datadir}/cups/model/Minolta-Color_PageWorks_Pro_L.ppd.gz
 %{_datadir}/cups/model/Minolta-magicolor_2200_DL.ppd.gz
 %{_datadir}/cups/model/Minolta-magicolor_2300_DL.ppd.gz
@@ -199,8 +231,10 @@ rm -rf $RPM_BUILD_ROOT
 %{_mandir}/man1/*xqx*
 %{_datadir}/foomatic/db/source/driver/foo2xqx.xml
 %{_datadir}/foomatic/db/source/opt/foo2xqx*.xml
-%{_datadir}/foomatic/db/source/printer/HP-LaserJet_M1005_MFP.xml
-%{_datadir}/cups/model/HP-LaserJet_M1005_MFP.ppd.gz
+%{_datadir}/foomatic/db/source/printer/HP-LaserJet_M*.xml
+%{_datadir}/foomatic/db/source/printer/HP-LaserJet_P*.xml
+%{_datadir}/cups/model/HP-LaserJet_M*.ppd.gz
+%{_datadir}/cups/model/HP-LaserJet_P*.ppd.gz
 
 %files -n foo2lava
 %{_bindir}/*lava*
@@ -227,6 +261,23 @@ rm -rf $RPM_BUILD_ROOT
 %{_datadir}/cups/model/Xerox-Phaser-611*.ppd.gz
 %{_datadir}/foo2qpdl/crd/
 
+%files -n foo2slx
+%{_bindir}/*slx*
+%{_bindir}/gipddecode
+%{_mandir}/man1/*slx*
+%{_datadir}/foomatic/db/source/driver/foo2slx.xml
+%{_datadir}/foomatic/db/source/opt/foo2slx*.xml
+%{_datadir}/foomatic/db/source/printer/Lexmark-C500.xml
+%{_datadir}/cups/model/Lexmark-C500.ppd.gz
+
+%files -n foo2hiperc
+%{_bindir}/*hiperc*
+%{_mandir}/man1/*hiperc*
+%{_datadir}/foomatic/db/source/driver/foo2hiperc.xml
+%{_datadir}/foomatic/db/source/opt/foo2hiperc*.xml
+%{_datadir}/foomatic/db/source/printer/Oki-C*.xml
+%{_datadir}/cups/model/Oki-C*.ppd.gz
+
 %doc COPYING ChangeLog INSTALL README manual.pdf
 
 %post
@@ -245,8 +296,9 @@ rm -rf $RPM_BUILD_ROOT
 /bin/rm -f /var/cache/foomatic/*
 
 %changelog
-* Sun Aug 03 2008 Thorsten Leemhuis <fedora [AT] leemhuis [DOT] info - 0.20070822-2
-- rebuild
+* Wed Mar 24 2008 David Woodhouse <dwmw2@infradead.org> 0.20080324-1
+- Update to 20080324
+- add foo2slx and foo2hiperc subpackage
 
 * Wed Aug 29 2007 David Woodhouse <dwmw2@infradead.org> 0.20070822-1
 - Update to 2007-08-22 release
