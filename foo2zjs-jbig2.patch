@@ -1,0 +1,40 @@
+diff -ur foo2zjs.orig/hipercdecode.c foo2zjs/hipercdecode.c
+--- foo2zjs.orig/hipercdecode.c	2008-05-29 10:46:26.000000000 +0100
++++ foo2zjs/hipercdecode.c	2008-09-04 18:59:49.000000000 +0100
+@@ -33,6 +33,15 @@
+ #include "jbig.h"
+ 
+ /*
++ * Handle libjbig v2.0 where jbg_strerror() takes only one argument.
++ * Unfortunately the JBG_VERSION macro is a string so we can't use that.
++ * Check for the changed JBG_XXX result codes in 2.0 instead.
++ */
++#if JBG_EOK_INTR == (1<<4)
++#define jbg_strerror(x,y) jbg_strerror(x)
++#endif
++
++/*
+  * Global option flags
+  */
+ int	Debug = 0;
+@@ -334,9 +343,9 @@
+ 			for (i = 0; i < blklen; ++i)
+ 			{
+ 			    rc = jbg_dec_in(&s[pn], &blk[i], 1, &cnt);
+-			    if (rc == JBG_OK)
++			    if (rc == JBG_EOK)
+ 				break;
+-			    if (rc != JBG_EAGAIN && rc != JBG_OK)
++			    if (rc != JBG_EAGAIN && rc != JBG_EOK)
+ 				error(1, "jbg_dec_in rc=%d (%s)\n",
+ 				    rc, jbg_strerror(rc, 0));
+ 			}
+@@ -350,7 +359,7 @@
+ 				if (image[i])
+ 				    printf("image[%d] = %x\n", i, image[i]);
+ 			}
+-			if (rc == JBG_OK)
++			if (rc == JBG_EOK)
+ 			{
+ 			    int	w, h;
+ 
