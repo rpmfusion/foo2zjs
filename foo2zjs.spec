@@ -1,13 +1,17 @@
+%define foo2zjs_ver 20080826
+
 Name:           foo2zjs
-Version:        0.20080324
+Version:        0.%{foo2zjs_ver}
 Release:        1%{?dist}
 Summary:        Linux printer driver for ZjStream protocol
 
 Group:          System Environment/Libraries
 License:        GPL
 URL:            http://foo2zjs.rkkda.com/
-Source0:        http://foo2zjs.rkkda.com/foo2zjs.tar.gz
+
+Source0:        foo2zjs-%{foo2zjs_ver}.tar.gz
 Patch0:         foo2zjs-dynamic-jbig.patch
+Patch1:		foo2zjs-jbig2.patch
 BuildRoot:      %{_tmppath}/%{name}-%{version}-%{release}-root-%(%{__id_u} -n)
 
 BuildRequires:  jbigkit-devel groff ghostscript
@@ -40,6 +44,11 @@ Requires:       lcms foo2zjs
 
 %package -n foo2hiperc
 Summary:        Linux printer driver for HIPERC protocol (Oki C3400n etc.)
+Group:          System Environment/Libraries
+Requires:       lcms foo2zjs
+
+%package -n foo2oak
+Summary:        Linux printer driver for OAKT protocol (HPLJ1500 etc.)
 Group:          System Environment/Libraries
 Requires:       lcms foo2zjs
 
@@ -151,9 +160,27 @@ only.
 Users of this package are requested to visit the author's web page at
 http://foo2hiperc.rkkda.com/ and consider contributing.
 
+%description -n foo2oak
+foo2oak is a printer driver for printers that use the Oak Technology
+(now Zoran) OAKT protocol for their print data, such as the HP Color
+LaserJet 1500, Kyocera KM-1635 and the Kyocera KM-2035. These printers
+are often erroneously referred to as winprinters or GDI
+printers. However, Microsoft GDI only mandates the API between an
+application and the printer driver, not the protocol on the wire
+between the printer driver and the printer. In fact, OAKT printers are
+raster printers which happen to use a fairly efficient wire protocol
+which was developed by Oak Technology and licensed by some printer
+manufacturers for at least some of their product lines. OAKT is just
+one of many wire protocols that are in use today, such as Postscript,
+PCL, Epson, ZjStream, etc.
+
+Users of this package are requested to visit the author's web page at
+http://foo2oak.rkkda.com/ and consider contributing.
+
 %prep
 %setup -q -n foo2zjs
 %patch0 -p1
+%patch1 -p1
 sed -i -e s/foo2zjs-icc2ps/icc2ps/g *wrapper*
 sed -i -e s/775/755/ Makefile
 chmod -x COPYING
@@ -175,17 +202,6 @@ make PREFIX=$RPM_BUILD_ROOT%{_prefix} BINPROGS= install-prog \
      MODEL=$RPM_BUILD_ROOT/usr/share/cups/model \
      PPD=$RPM_BUILD_ROOT/usr/share/ppd \
      install-extra install-crd install-man install-foo install-ppd 
-
-
-# Remove remnants of GPL-violating foo2oak stuff.
-rm -f $RPM_BUILD_ROOT%{_bindir}/*oak*
-rm -f $RPM_BUILD_ROOT%{_mandir}/man1/*oak*.1
-rm -f $RPM_BUILD_ROOT%{_datadir}/foomatic/db/source/opt/foo2oak*
-rm -f $RPM_BUILD_ROOT%{_datadir}/foomatic/db/source/driver/foo2oak.xml
-rm -f $RPM_BUILD_ROOT%{_datadir}/foomatic/db/source/printer/Generic-OAKT_Printer.xml
-rm -f $RPM_BUILD_ROOT%{_datadir}/foomatic/db/source/printer/HP-Color_LaserJet_1500.xml
-rm -f $RPM_BUILD_ROOT/usr/share/cups/model/Generic-OAKT_Printer.ppd.gz
-rm -f $RPM_BUILD_ROOT/usr/share/cups/model/HP-Color_LaserJet_1500.ppd.gz
 
 # Remove man page for usb_printerid which we don't ship
 rm -f $RPM_BUILD_ROOT%{_mandir}/man1/usb_printerid.1
@@ -223,6 +239,8 @@ rm -rf $RPM_BUILD_ROOT
 %{_datadir}/foomatic/db/source/opt/foo2hp*.xml
 %{_datadir}/foomatic/db/source/printer/HP-Color_LaserJet_1600.xml
 %{_datadir}/foomatic/db/source/printer/HP-Color_LaserJet_2600n.xml
+%{_datadir}/foomatic/db/source/printer/HP-Color_LaserJet_CP1215.xml
+%{_datadir}/cups/model/HP-Color_LaserJet_CP1215.ppd.gz
 %{_datadir}/cups/model/HP-Color_LaserJet_1600.ppd.gz
 %{_datadir}/cups/model/HP-Color_LaserJet_2600n.ppd.gz
 
@@ -243,12 +261,12 @@ rm -rf $RPM_BUILD_ROOT
 %{_mandir}/man1/opldecode.1.gz
 %{_datadir}/foomatic/db/source/driver/foo2lava.xml
 %{_datadir}/foomatic/db/source/opt/foo2lava*.xml
-%{_datadir}/foomatic/db/source/printer/KonicaMinolta-magicolor_2480_MF.xml
-%{_datadir}/foomatic/db/source/printer/KonicaMinolta-magicolor_2490_MF.xml
-%{_datadir}/foomatic/db/source/printer/KonicaMinolta-magicolor_2530_DL.xml
-%{_datadir}/cups/model/KonicaMinolta-magicolor_2480_MF.ppd.gz
-%{_datadir}/cups/model/KonicaMinolta-magicolor_2490_MF.ppd.gz
-%{_datadir}/cups/model/KonicaMinolta-magicolor_2530_DL.ppd.gz
+%{_datadir}/foomatic/db/source/printer/KONICA_MINOLTA-magicolor_2480_MF.xml
+%{_datadir}/foomatic/db/source/printer/KONICA_MINOLTA-magicolor_2490_MF.xml
+%{_datadir}/foomatic/db/source/printer/KONICA_MINOLTA-magicolor_2530_DL.xml
+%{_datadir}/cups/model/KONICA_MINOLTA-magicolor_2480_MF.ppd.gz
+%{_datadir}/cups/model/KONICA_MINOLTA-magicolor_2490_MF.ppd.gz
+%{_datadir}/cups/model/KONICA_MINOLTA-magicolor_2530_DL.ppd.gz
 
 %files -n foo2qpdl
 %{_bindir}/*qpdl*
@@ -278,6 +296,21 @@ rm -rf $RPM_BUILD_ROOT
 %{_datadir}/foomatic/db/source/printer/Oki-C*.xml
 %{_datadir}/cups/model/Oki-C*.ppd.gz
 
+%files -n foo2oak
+%{_bindir}/*oak*
+%{_mandir}/man1/*oak*.1.gz
+%{_datadir}/foomatic/db/source/opt/foo2oak*
+%{_datadir}/foomatic/db/source/driver/foo2oak.xml
+%{_datadir}/foomatic/db/source/driver/foo2oak-z1.xml
+%{_datadir}/foomatic/db/source/printer/Generic-OAKT_Printer.xml
+%{_datadir}/foomatic/db/source/printer/HP-Color_LaserJet_1500.xml
+%{_datadir}/foomatic/db/source/printer/Kyocera-KM-1635.xml
+%{_datadir}/foomatic/db/source/printer/Kyocera-KM-2035.xml
+%{_datadir}/cups/model/Generic-OAKT_Printer.ppd.gz
+%{_datadir}/cups/model/HP-Color_LaserJet_1500.ppd.gz
+%{_datadir}/cups/model/Kyocera-KM-1635.ppd.gz
+%{_datadir}/cups/model/Kyocera-KM-2035.ppd.gz
+
 %doc COPYING ChangeLog INSTALL README manual.pdf
 
 %post
@@ -295,7 +328,21 @@ rm -rf $RPM_BUILD_ROOT
 %post -n foo2qpdl
 /bin/rm -f /var/cache/foomatic/*
 
+%post -n foo2oak
+/bin/rm -f /var/cache/foomatic/*
+
+%post -n foo2slx
+/bin/rm -f /var/cache/foomatic/*
+
+%post -n foo2hiperc
+/bin/rm -f /var/cache/foomatic/*
+
 %changelog
+* Thu Sep 04 2008 David Woodhouse <dwmw2@infradead.org> 0.20080826-1
+- Update to 20080826
+- Fixes to build with jbigkit 2.0
+- add foo2oak subpackage
+
 * Wed Mar 24 2008 David Woodhouse <dwmw2@infradead.org> 0.20080324-1
 - Update to 20080324
 - add foo2slx and foo2hiperc subpackage
