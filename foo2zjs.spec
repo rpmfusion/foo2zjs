@@ -2,7 +2,7 @@
 
 Name:           foo2zjs
 Version:        0.%{foo2zjs_ver}
-Release:        1%{?dist}
+Release:        2%{?dist}
 Summary:        Linux printer driver for ZjStream protocol
 
 Group:          System Environment/Libraries
@@ -338,6 +338,9 @@ rm -rf $RPM_BUILD_ROOT
 /bin/rm -f /var/cache/foomatic/*
 
 %changelog
+* Sun Mar 29 2009 Thorsten Leemhuis <fedora [AT] leemhuis [DOT] info> - 0.20080826-2
+- rebuild for new F11 features
+
 * Thu Sep 04 2008 David Woodhouse <dwmw2@infradead.org> 0.20080826-1
 - Update to 20080826
 - Fixes to build with jbigkit 2.0
