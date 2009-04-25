@@ -346,7 +346,7 @@ rm -rf $RPM_BUILD_ROOT
 /bin/rm -f /var/cache/foomatic/*
 
 %changelog
-* Mon Mar 09 2009 Lubomir Rintel <lkundrak@v3.sk> 0.20080826-3
+* Sat Apr 25 2009 Lubomir Rintel <lkundrak@v3.sk> 0.20080826-3
 - Add proper scriptlet requires
 
 * Sun Mar 29 2009 Thorsten Leemhuis <fedora [AT] leemhuis [DOT] info> - 0.20080826-2
