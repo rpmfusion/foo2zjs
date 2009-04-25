@@ -2,7 +2,7 @@
 
 Name:           foo2zjs
 Version:        0.%{foo2zjs_ver}
-Release:        2%{?dist}
+Release:        3%{?dist}
 Summary:        Linux printer driver for ZjStream protocol
 
 Group:          System Environment/Libraries
@@ -16,41 +16,49 @@ BuildRoot:      %{_tmppath}/%{name}-%{version}-%{release}-root-%(%{__id_u} -n)
 
 BuildRequires:  jbigkit-devel groff ghostscript
 Requires:       lcms
+Requires(post): /bin/rm
 
 %package -n foo2hp
 Summary:        Linux printer driver for HP 1600, HP 2600n
 Group:          System Environment/Libraries
 Requires:       lcms foo2zjs
+Requires(post): /bin/rm
 
 %package -n foo2xqx
 Summary:        Linux printer driver for HP LaserJet M1005 MFP
 Group:          System Environment/Libraries
 Requires:       lcms foo2zjs
+Requires(post): /bin/rm
 
 %package -n foo2lava
 Summary:        Linux printer driver for Zenographics LAVAFLOW protocol
 Group:          System Environment/Libraries
 Requires:       lcms foo2zjs
+Requires(post): /bin/rm
 
 %package -n foo2qpdl
 Summary:        Linux printer driver for Samsung CLP-300, CLP-600, CLP-3160
 Group:          System Environment/Libraries
 Requires:       lcms foo2zjs
+Requires(post): /bin/rm
 
 %package -n foo2slx
 Summary:        Linux printer driver for SLX protocol (Lexmark C500n etc.)
 Group:          System Environment/Libraries
 Requires:       lcms foo2zjs
+Requires(post): /bin/rm
 
 %package -n foo2hiperc
 Summary:        Linux printer driver for HIPERC protocol (Oki C3400n etc.)
 Group:          System Environment/Libraries
 Requires:       lcms foo2zjs
+Requires(post): /bin/rm
 
 %package -n foo2oak
 Summary:        Linux printer driver for OAKT protocol (HPLJ1500 etc.)
 Group:          System Environment/Libraries
 Requires:       lcms foo2zjs
+Requires(post): /bin/rm
 
 %description
 foo2zjs is an open source printer driver for printers that use the
@@ -338,6 +346,9 @@ rm -rf $RPM_BUILD_ROOT
 /bin/rm -f /var/cache/foomatic/*
 
 %changelog
+* Mon Mar 09 2009 Lubomir Rintel <lkundrak@v3.sk> 0.20080826-3
+- Add proper scriptlet requires
+
 * Sun Mar 29 2009 Thorsten Leemhuis <fedora [AT] leemhuis [DOT] info> - 0.20080826-2
 - rebuild for new F11 features
 
