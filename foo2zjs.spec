@@ -1,8 +1,8 @@
-%define foo2zjs_ver 20080826
+%define foo2zjs_ver 20091106
 
 Name:           foo2zjs
 Version:        0.%{foo2zjs_ver}
-Release:        3%{?dist}
+Release:        1%{?dist}
 Summary:        Linux printer driver for ZjStream protocol
 
 Group:          System Environment/Libraries
@@ -11,7 +11,6 @@ URL:            http://foo2zjs.rkkda.com/
 
 Source0:        foo2zjs-%{foo2zjs_ver}.tar.gz
 Patch0:         foo2zjs-dynamic-jbig.patch
-Patch1:		foo2zjs-jbig2.patch
 BuildRoot:      %{_tmppath}/%{name}-%{version}-%{release}-root-%(%{__id_u} -n)
 
 BuildRequires:  jbigkit-devel groff ghostscript
@@ -188,7 +187,6 @@ http://foo2oak.rkkda.com/ and consider contributing.
 %prep
 %setup -q -n foo2zjs
 %patch0 -p1
-%patch1 -p1
 sed -i -e s/foo2zjs-icc2ps/icc2ps/g *wrapper*
 sed -i -e s/775/755/ Makefile
 chmod -x COPYING
@@ -213,6 +211,8 @@ make PREFIX=$RPM_BUILD_ROOT%{_prefix} BINPROGS= install-prog \
 
 # Remove man page for usb_printerid which we don't ship
 rm -f $RPM_BUILD_ROOT%{_mandir}/man1/usb_printerid.1
+rm -f $RPM_BUILD_ROOT%{_mandir}/man1/printer-profile.1
+rm -f $RPM_BUILD_ROOT%{_bindir}/printer-profile
 
 
 %clean
@@ -269,12 +269,16 @@ rm -rf $RPM_BUILD_ROOT
 %{_mandir}/man1/opldecode.1.gz
 %{_datadir}/foomatic/db/source/driver/foo2lava.xml
 %{_datadir}/foomatic/db/source/opt/foo2lava*.xml
+%{_datadir}/foomatic/db/source/printer/KONICA_MINOLTA-magicolor_16*.xml
 %{_datadir}/foomatic/db/source/printer/KONICA_MINOLTA-magicolor_2480_MF.xml
 %{_datadir}/foomatic/db/source/printer/KONICA_MINOLTA-magicolor_2490_MF.xml
 %{_datadir}/foomatic/db/source/printer/KONICA_MINOLTA-magicolor_2530_DL.xml
+%{_datadir}/foomatic/db/source/printer/KONICA_MINOLTA-magicolor_4690MF.xml
+%{_datadir}/cups/model/KONICA_MINOLTA-magicolor_16*.ppd.gz
 %{_datadir}/cups/model/KONICA_MINOLTA-magicolor_2480_MF.ppd.gz
 %{_datadir}/cups/model/KONICA_MINOLTA-magicolor_2490_MF.ppd.gz
 %{_datadir}/cups/model/KONICA_MINOLTA-magicolor_2530_DL.ppd.gz
+%{_datadir}/cups/model/KONICA_MINOLTA-magicolor_4690MF.ppd.gz
 
 %files -n foo2qpdl
 %{_bindir}/*qpdl*
@@ -282,9 +286,9 @@ rm -rf $RPM_BUILD_ROOT
 %{_datadir}/foomatic/db/source/driver/foo2qpdl.xml
 %{_datadir}/foomatic/db/source/opt/foo2qpdl*.xml
 %{_datadir}/foomatic/db/source/printer/Samsung-CL*.xml
-%{_datadir}/foomatic/db/source/printer/Xerox-Phaser-611*.xml
+%{_datadir}/foomatic/db/source/printer/Xerox-Phaser_611*.xml
 %{_datadir}/cups/model/Samsung-CL*.ppd.gz
-%{_datadir}/cups/model/Xerox-Phaser-611*.ppd.gz
+%{_datadir}/cups/model/Xerox-Phaser_611*.ppd.gz
 %{_datadir}/foo2qpdl/crd/
 
 %files -n foo2slx
@@ -346,6 +350,9 @@ rm -rf $RPM_BUILD_ROOT
 /bin/rm -f /var/cache/foomatic/*
 
 %changelog
+* Sun Nov 08 2009 David Woodhouse <dwmw2@infradead.org> 0.20091106-1
+- Update to 20091106
+
 * Sat Apr 25 2009 Lubomir Rintel <lkundrak@v3.sk> 0.20080826-3
 - Add proper scriptlet requires
 
