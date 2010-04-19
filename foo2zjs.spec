@@ -350,6 +350,9 @@ rm -rf $RPM_BUILD_ROOT
 /bin/rm -f /var/cache/foomatic/*
 
 %changelog
+* Mon Apr 19 2010 David Woodhouse <dwmw2@infradead.org> 0.20100413-1
+- Update to 20100413
+
 * Sun Nov 08 2009 David Woodhouse <dwmw2@infradead.org> 0.20091106-1
 - Update to 20091106
 
