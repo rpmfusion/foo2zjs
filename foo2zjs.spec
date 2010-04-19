@@ -1,4 +1,4 @@
-%define foo2zjs_ver 20091106
+%define foo2zjs_ver 20100413
 
 Name:           foo2zjs
 Version:        0.%{foo2zjs_ver}
