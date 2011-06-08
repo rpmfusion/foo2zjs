@@ -1,4 +1,4 @@
-%define foo2zjs_ver 20101016
+%define foo2zjs_ver 20110602
 
 Name:           foo2zjs
 Version:        0.%{foo2zjs_ver}
@@ -14,6 +14,7 @@ Patch0:         foo2zjs-dynamic-jbig.patch
 BuildRoot:      %{_tmppath}/%{name}-%{version}-%{release}-root-%(%{__id_u} -n)
 
 BuildRequires:  jbigkit-devel groff ghostscript
+BuildRequires:  bc
 Requires:       lcms
 Requires:       argyllcms
 Requires(post): /bin/rm
@@ -242,6 +243,7 @@ rm -rf $RPM_BUILD_ROOT
 %{_datadir}/foomatic/db/source/driver/foo2zjs.xml
 %{_datadir}/foomatic/db/source/driver/foo2zjs-z1.xml
 %{_datadir}/foomatic/db/source/driver/foo2zjs-z2.xml
+%{_datadir}/foomatic/db/source/driver/foo2zjs-z3.xml
 %{_datadir}/foomatic/db/source/opt/foo2zjs*.xml
 %{_datadir}/foomatic/db/source/opt/foo2xxx*.xml
 %{_datadir}/foomatic/db/source/printer/Generic-ZjStream_Printer.xml
@@ -250,12 +252,14 @@ rm -rf $RPM_BUILD_ROOT
 %{_datadir}/foomatic/db/source/printer/Minolta-magicolor_2200_DL.xml
 %{_datadir}/foomatic/db/source/printer/Minolta-magicolor_2300_DL.xml
 %{_datadir}/foomatic/db/source/printer/Minolta-magicolor_2430_DL.xml
+%{_datadir}/foomatic/db/source/printer/Olivetti-d-Color_P160W.xml
 %{_datadir}/cups/model/Generic-ZjStream_Printer.ppd.gz
 %{_datadir}/cups/model/HP-LaserJet_1*.ppd.gz
 %{_datadir}/cups/model/Minolta-Color_PageWorks_Pro_L.ppd.gz
 %{_datadir}/cups/model/Minolta-magicolor_2200_DL.ppd.gz
 %{_datadir}/cups/model/Minolta-magicolor_2300_DL.ppd.gz
 %{_datadir}/cups/model/Minolta-magicolor_2430_DL.ppd.gz
+%{_datadir}/cups/model/Olivetti-d-Color_P160W.ppd.gz
 
 %files -n foo2hp
 %defattr(-,root,root,-)
@@ -310,7 +314,9 @@ rm -rf $RPM_BUILD_ROOT
 %files -n foo2qpdl
 %defattr(-,root,root,-)
 %{_bindir}/*qpdl*
+%{_bindir}/hbpldecode
 %{_mandir}/man1/*qpdl*
+%{_mandir}/man1/hbpldecode*
 %{_datadir}/foomatic/db/source/driver/foo2qpdl.xml
 %{_datadir}/foomatic/db/source/opt/foo2qpdl*.xml
 %{_datadir}/foomatic/db/source/printer/Samsung-CL*.xml
@@ -381,6 +387,16 @@ rm -rf $RPM_BUILD_ROOT
 /bin/rm -f /var/cache/foomatic/*
 
 %changelog
+* Thu Jun 7 2011 Cédric Olivier <cedric.olivier@free.fr> 0.20110602-1
+- New program: hbpldecode for decoding Fuji-Zerox cp105b and Dell 1250c
+
+* Sun Feb 13 2011 Cédric Olivier <cedric.olivier@free.fr> 0.20110210-1
+- Update to last release
+- New Printer: Olivetti d-Color P160W
+- New Printer: HP LaserJet Pro CP1025nw
+- New printers: HP LaserJet 1022n, HP LaserJet 1022nw
+- New Printer: Oki C310dn
+
 * Sat Oct 23 2010 Cedric Olivier <cedric.olivier@free.fr> 0.20101016-1
 - Update to last release
 - Remove Samsung-CLP-310.xml which conflict with foomatic-db package
