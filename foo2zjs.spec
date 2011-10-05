@@ -1,4 +1,4 @@
-%define foo2zjs_ver 20100413
+%define foo2zjs_ver 20110909
 
 Name:           foo2zjs
 Version:        0.%{foo2zjs_ver}
@@ -6,15 +6,20 @@ Release:        1%{?dist}
 Summary:        Linux printer driver for ZjStream protocol
 
 Group:          System Environment/Libraries
-License:        GPL
+License:        GPLv2
 URL:            http://foo2zjs.rkkda.com/
 
 Source0:        foo2zjs-%{foo2zjs_ver}.tar.gz
 Patch0:         foo2zjs-dynamic-jbig.patch
+Patch1:		foo2zjs-device-ids.patch
 BuildRoot:      %{_tmppath}/%{name}-%{version}-%{release}-root-%(%{__id_u} -n)
 
 BuildRequires:  jbigkit-devel groff ghostscript
+BuildRequires:  bc
+# For the psdriver autoprovides
+BuildRequires:  python-cups
 Requires:       lcms
+Requires:       argyllcms
 Requires(post): /bin/rm
 
 %package -n foo2hp
@@ -186,10 +191,26 @@ http://foo2oak.rkkda.com/ and consider contributing.
 
 %prep
 %setup -q -n foo2zjs
+
+# Patch to use jbigkit-devel package instead of static jbig source code
 %patch0 -p1
+
+# add missing 1284 Device IDs
+%patch1 -p1
+
+# Remove jbig source code, jbigkit-devel package is used in BuildRequires
+#rm -f jbig*
+
 sed -i -e s/foo2zjs-icc2ps/icc2ps/g *wrapper*
 sed -i -e s/775/755/ Makefile
 chmod -x COPYING
+
+# Xerox-Phaser_6110 not needed files because already in foomatic-db package
+rm foomatic-db/printer/Xerox-Phaser_6110.xml
+rm PPD/Xerox-Phaser_6110.ppd
+
+# Samsung CLP-310 already included in foomatic-db package
+rm foomatic-db/printer/Samsung-CLP-310.xml
 
 %build
 make %{?_smp_mflags} CFLAGS="$RPM_OPT_FLAGS"
@@ -211,8 +232,6 @@ make PREFIX=$RPM_BUILD_ROOT%{_prefix} BINPROGS= install-prog \
 
 # Remove man page for usb_printerid which we don't ship
 rm -f $RPM_BUILD_ROOT%{_mandir}/man1/usb_printerid.1
-rm -f $RPM_BUILD_ROOT%{_mandir}/man1/printer-profile.1
-rm -f $RPM_BUILD_ROOT%{_bindir}/printer-profile
 
 
 %clean
@@ -222,9 +241,15 @@ rm -rf $RPM_BUILD_ROOT
 %files
 %defattr(-,root,root,-)
 %{_bindir}/*zjs*
+%{_bindir}/printer-profile
 %{_datadir}/foo2zjs
 %{_mandir}/man1/*zjs*
+%{_mandir}/man1/printer-profile.1.gz
+%{_mandir}/man1/gipddecode.1.gz
 %{_datadir}/foomatic/db/source/driver/foo2zjs.xml
+%{_datadir}/foomatic/db/source/driver/foo2zjs-z1.xml
+%{_datadir}/foomatic/db/source/driver/foo2zjs-z2.xml
+%{_datadir}/foomatic/db/source/driver/foo2zjs-z3.xml
 %{_datadir}/foomatic/db/source/opt/foo2zjs*.xml
 %{_datadir}/foomatic/db/source/opt/foo2xxx*.xml
 %{_datadir}/foomatic/db/source/printer/Generic-ZjStream_Printer.xml
@@ -233,14 +258,17 @@ rm -rf $RPM_BUILD_ROOT
 %{_datadir}/foomatic/db/source/printer/Minolta-magicolor_2200_DL.xml
 %{_datadir}/foomatic/db/source/printer/Minolta-magicolor_2300_DL.xml
 %{_datadir}/foomatic/db/source/printer/Minolta-magicolor_2430_DL.xml
+%{_datadir}/foomatic/db/source/printer/Olivetti-d-Color_P160W.xml
 %{_datadir}/cups/model/Generic-ZjStream_Printer.ppd.gz
 %{_datadir}/cups/model/HP-LaserJet_1*.ppd.gz
 %{_datadir}/cups/model/Minolta-Color_PageWorks_Pro_L.ppd.gz
 %{_datadir}/cups/model/Minolta-magicolor_2200_DL.ppd.gz
 %{_datadir}/cups/model/Minolta-magicolor_2300_DL.ppd.gz
 %{_datadir}/cups/model/Minolta-magicolor_2430_DL.ppd.gz
+%{_datadir}/cups/model/Olivetti-d-Color_P160W.ppd.gz
 
 %files -n foo2hp
+%defattr(-,root,root,-)
 %{_bindir}/*hp*
 %{_mandir}/man1/*hp*
 %{_datadir}/foomatic/db/source/driver/foo2hp.xml
@@ -253,6 +281,7 @@ rm -rf $RPM_BUILD_ROOT
 %{_datadir}/cups/model/HP-Color_LaserJet_2600n.ppd.gz
 
 %files -n foo2xqx
+%defattr(-,root,root,-)
 %{_bindir}/*xqx*
 %{_mandir}/man1/*xqx*
 %{_datadir}/foomatic/db/source/driver/foo2xqx.xml
@@ -263,35 +292,47 @@ rm -rf $RPM_BUILD_ROOT
 %{_datadir}/cups/model/HP-LaserJet_P*.ppd.gz
 
 %files -n foo2lava
+%defattr(-,root,root,-)
 %{_bindir}/*lava*
 %{_bindir}/opldecode
 %{_mandir}/man1/*lava*
 %{_mandir}/man1/opldecode.1.gz
 %{_datadir}/foomatic/db/source/driver/foo2lava.xml
 %{_datadir}/foomatic/db/source/opt/foo2lava*.xml
-%{_datadir}/foomatic/db/source/printer/KONICA_MINOLTA-magicolor_16*.xml
 %{_datadir}/foomatic/db/source/printer/KONICA_MINOLTA-magicolor_2480_MF.xml
 %{_datadir}/foomatic/db/source/printer/KONICA_MINOLTA-magicolor_2490_MF.xml
 %{_datadir}/foomatic/db/source/printer/KONICA_MINOLTA-magicolor_2530_DL.xml
+%{_datadir}/foomatic/db/source/printer/KONICA_MINOLTA-magicolor_1600W.xml
+%{_datadir}/foomatic/db/source/printer/KONICA_MINOLTA-magicolor_1680MF.xml
+%{_datadir}/foomatic/db/source/printer/KONICA_MINOLTA-magicolor_1690MF.xml
 %{_datadir}/foomatic/db/source/printer/KONICA_MINOLTA-magicolor_4690MF.xml
-%{_datadir}/cups/model/KONICA_MINOLTA-magicolor_16*.ppd.gz
+%{_datadir}/foomatic/db/source/printer/Xerox-Phaser_6121MFP.xml
 %{_datadir}/cups/model/KONICA_MINOLTA-magicolor_2480_MF.ppd.gz
 %{_datadir}/cups/model/KONICA_MINOLTA-magicolor_2490_MF.ppd.gz
 %{_datadir}/cups/model/KONICA_MINOLTA-magicolor_2530_DL.ppd.gz
+%{_datadir}/cups/model/KONICA_MINOLTA-magicolor_1600W.ppd.gz
+%{_datadir}/cups/model/KONICA_MINOLTA-magicolor_1680MF.ppd.gz
+%{_datadir}/cups/model/KONICA_MINOLTA-magicolor_1690MF.ppd.gz
 %{_datadir}/cups/model/KONICA_MINOLTA-magicolor_4690MF.ppd.gz
+%{_datadir}/cups/model/Xerox-Phaser_6121MFP.ppd.gz
+
 
 %files -n foo2qpdl
+%defattr(-,root,root,-)
 %{_bindir}/*qpdl*
+%{_bindir}/hbpldecode
 %{_mandir}/man1/*qpdl*
+%{_mandir}/man1/hbpldecode*
 %{_datadir}/foomatic/db/source/driver/foo2qpdl.xml
 %{_datadir}/foomatic/db/source/opt/foo2qpdl*.xml
 %{_datadir}/foomatic/db/source/printer/Samsung-CL*.xml
-%{_datadir}/foomatic/db/source/printer/Xerox-Phaser_611*.xml
+%{_datadir}/foomatic/db/source/printer/Xerox-Phaser_6115MFP.xml
 %{_datadir}/cups/model/Samsung-CL*.ppd.gz
-%{_datadir}/cups/model/Xerox-Phaser_611*.ppd.gz
+%{_datadir}/cups/model/Xerox-Phaser_6115MFP.ppd.gz
 %{_datadir}/foo2qpdl/crd/
 
 %files -n foo2slx
+%defattr(-,root,root,-)
 %{_bindir}/*slx*
 %{_bindir}/gipddecode
 %{_mandir}/man1/*slx*
@@ -301,6 +342,7 @@ rm -rf $RPM_BUILD_ROOT
 %{_datadir}/cups/model/Lexmark-C500.ppd.gz
 
 %files -n foo2hiperc
+%defattr(-,root,root,-)
 %{_bindir}/*hiperc*
 %{_mandir}/man1/*hiperc*
 %{_datadir}/foomatic/db/source/driver/foo2hiperc.xml
@@ -309,6 +351,7 @@ rm -rf $RPM_BUILD_ROOT
 %{_datadir}/cups/model/Oki-C*.ppd.gz
 
 %files -n foo2oak
+%defattr(-,root,root,-)
 %{_bindir}/*oak*
 %{_mandir}/man1/*oak*.1.gz
 %{_datadir}/foomatic/db/source/opt/foo2oak*
@@ -350,11 +393,48 @@ rm -rf $RPM_BUILD_ROOT
 /bin/rm -f /var/cache/foomatic/*
 
 %changelog
-* Mon Apr 19 2010 David Woodhouse <dwmw2@infradead.org> 0.20100413-1
-- Update to 20100413
+* Wed Oct 5 2011 David Woodhouse <dwmw2@infradead.org> 0.20110909-1
+- Update to latest release
+- Add Konica Minolta variant of 2430DL and 2300DL
+- BR python-cups to get foomatic autodeps working
 
-* Sun Nov 08 2009 David Woodhouse <dwmw2@infradead.org> 0.20091106-1
-- Update to 20091106
+* Thu Jun 7 2011 Cédric Olivier <cedric.olivier@free.fr> 0.20110602-1
+- New program: hbpldecode for decoding Fuji-Zerox cp105b and Dell 1250c
+
+* Sun Feb 13 2011 Cédric Olivier <cedric.olivier@free.fr> 0.20110210-1
+- Update to last release
+- New Printer: Olivetti d-Color P160W
+- New Printer: HP LaserJet Pro CP1025nw
+- New printers: HP LaserJet 1022n, HP LaserJet 1022nw
+- New Printer: Oki C310dn
+
+* Sat Oct 23 2010 Cedric Olivier <cedric.olivier@free.fr> 0.20101016-1
+- Update to last release
+- Remove Samsung-CLP-310.xml which conflict with foomatic-db package
+
+* Wed Sep 17 2010 Cedric Olivier <cedric.olivier@free.fr> 0.20100817-1
+- New foo2lava printer: Xerox Phaser 6121MFP (printer only)
+- Added manual page for foo2zjs-icc2ps
+
+* Thu Jul 22 2010 Cedric Olivier <cedric.olivier@free.fr> 0.20100722-1
+- New Printer: Oki C110
+- Change PPD's for Konica Minolta mc1600W, mc1680MF, mc1690MF, mc2490 MF, mc2530 DL, mc4690MF, 
+and Oki C110 if cups-devel is installed.
+- Used for reporting marker (toner) levels via PJL on foo2lava printers.
+
+* Thu May 11 2010 Cedric Olivier <cedric.olivier@free.fr> 0.20100506-2
+- add foo2zjs-dynamic-jbig patch to use jbigkit-devel package instead of static jbig source code
+
+* Fri May 07 2010 Cedric Olivier <cedric.olivier@free.fr> 0.20100506-1
+- Update to 20100506
+- New Printers: Oki C5650
+- New Printers: HP LaserJet Pro P1102, P1102w
+- New Printers: HP LaserJet Pro P1566
+- New Printers: HP LaserJet Pro P1606dn
+
+* Wed Mar 10 2010 Cedric Olivier <cedric.olivier@free.fr> 0.20100307-1
+- Update to 20100307
+- BugFix and adding new printers supports
 
 * Sat Apr 25 2009 Lubomir Rintel <lkundrak@v3.sk> 0.20080826-3
 - Add proper scriptlet requires
