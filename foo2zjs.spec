@@ -1,4 +1,4 @@
-%define foo2zjs_ver 20110602
+%define foo2zjs_ver 20110909
 
 Name:           foo2zjs
 Version:        0.%{foo2zjs_ver}
@@ -11,10 +11,13 @@ URL:            http://foo2zjs.rkkda.com/
 
 Source0:        foo2zjs-%{foo2zjs_ver}.tar.gz
 Patch0:         foo2zjs-dynamic-jbig.patch
+Patch1:		foo2zjs-device-ids.patch
 BuildRoot:      %{_tmppath}/%{name}-%{version}-%{release}-root-%(%{__id_u} -n)
 
 BuildRequires:  jbigkit-devel groff ghostscript
 BuildRequires:  bc
+# For the psdriver autoprovides
+BuildRequires:  python-cups
 Requires:       lcms
 Requires:       argyllcms
 Requires(post): /bin/rm
@@ -191,6 +194,9 @@ http://foo2oak.rkkda.com/ and consider contributing.
 
 # Patch to use jbigkit-devel package instead of static jbig source code
 %patch0 -p1
+
+# add missing 1284 Device IDs
+%patch1 -p1
 
 # Remove jbig source code, jbigkit-devel package is used in BuildRequires
 #rm -f jbig*
@@ -387,6 +393,11 @@ rm -rf $RPM_BUILD_ROOT
 /bin/rm -f /var/cache/foomatic/*
 
 %changelog
+* Wed Oct 5 2011 David Woodhouse <dwmw2@infradead.org> 0.20110909-1
+- Update to latest release
+- Add Konica Minolta variant of 2430DL and 2300DL
+- BR python-cups to get foomatic autodeps working
+
 * Thu Jun 7 2011 Cédric Olivier <cedric.olivier@free.fr> 0.20110602-1
 - New program: hbpldecode for decoding Fuji-Zerox cp105b and Dell 1250c
 

@@ -1,5 +1,5 @@
-diff -uNr foo2zjs-patch1/jbig_ar.c foo2zjs/jbig_ar.c
---- foo2zjs-patch1/jbig_ar.c	2008-09-05 17:05:54.000000000 +0200
+diff -uNrP foo2zjs-20110909/jbig_ar.c foo2zjs/jbig_ar.c
+--- foo2zjs-20110909/jbig_ar.c	2008-09-05 16:05:54.000000000 +0100
 +++ foo2zjs/jbig_ar.c	1970-01-01 01:00:00.000000000 +0100
 @@ -1,426 +0,0 @@
 -/*
@@ -428,8 +428,8 @@ diff -uNr foo2zjs-patch1/jbig_ar.c foo2zjs/jbig_ar.c
 -
 -  return pix;
 -}
-diff -uNr foo2zjs-patch1/jbig_ar.h foo2zjs/jbig_ar.h
---- foo2zjs-patch1/jbig_ar.h	2008-09-05 17:05:54.000000000 +0200
+diff -uNrP foo2zjs-20110909/jbig_ar.h foo2zjs/jbig_ar.h
+--- foo2zjs-20110909/jbig_ar.h	2008-09-05 16:05:54.000000000 +0100
 +++ foo2zjs/jbig_ar.h	1970-01-01 01:00:00.000000000 +0100
 @@ -1,55 +0,0 @@
 -/*
@@ -487,8 +487,8 @@ diff -uNr foo2zjs-patch1/jbig_ar.h foo2zjs/jbig_ar.h
 -int  arith_decode(struct jbg_ardec_state *s, int cx);
 -
 -#endif /* JBG_AR_H */
-diff -uNr foo2zjs-patch1/jbig.c foo2zjs/jbig.c
---- foo2zjs-patch1/jbig.c	2008-09-05 17:06:03.000000000 +0200
+diff -uNrP foo2zjs-20110909/jbig.c foo2zjs/jbig.c
+--- foo2zjs-20110909/jbig.c	2011-06-09 12:54:12.000000000 +0100
 +++ foo2zjs/jbig.c	1970-01-01 01:00:00.000000000 +0100
 @@ -1,3289 +0,0 @@
 -/*
@@ -496,7 +496,7 @@ diff -uNr foo2zjs-patch1/jbig.c foo2zjs/jbig.c
 - *
 - *  Copyright 1995-2007 -- Markus Kuhn -- http://www.cl.cam.ac.uk/~mgk25/
 - *
-- *  $Id: jbig.c,v 1.5 2008/09/05 15:05:54 rick Exp $
+- *  $Id: jbig.c,v 1.6 2011/06/09 11:54:12 rick Exp $
 - *
 - *  This module implements a portable standard C encoder and decoder
 - *  using the JBIG1 lossless bi-level image compression algorithm
@@ -575,7 +575,7 @@ diff -uNr foo2zjs-patch1/jbig.c foo2zjs/jbig.c
 -const char jbg_version[] = 
 -  "JBIG-KIT " JBG_VERSION " -- (c) 1995-2008 Markus Kuhn -- "
 -  "Licence: " JBG_LICENCE "\n"
--  "$Id: jbig.c,v 1.5 2008/09/05 15:05:54 rick Exp $ ";
+-  "$Id: jbig.c,v 1.6 2011/06/09 11:54:12 rick Exp $ ";
 -
 -/*
 - * the following array specifies for each combination of the 3
@@ -3613,7 +3613,7 @@ diff -uNr foo2zjs-patch1/jbig.c foo2zjs/jbig.c
 -					   void *file), void *file)
 -{
 -#define BUFLEN 4096
--  int bpp;
+-  // int bpp;
 -  unsigned long bpl, line, i;
 -  unsigned k = 8;
 -  int p;
@@ -3630,7 +3630,7 @@ diff -uNr foo2zjs-patch1/jbig.c foo2zjs/jbig.c
 -  y = jbg_dec_getheight(s);
 -  if (x == 0 || y == 0)
 -    return;
--  bpp = (s->planes + 7) / 8;   /* bytes per pixel in dest image */
+-  // bpp = (s->planes + 7) / 8;   /* bytes per pixel in dest image */
 -  bpl = jbg_ceil_half(x, 3);   /* bytes per line in src plane */
 -
 -  if (iindex[s->order & 7][LAYER] == 0)
@@ -3780,8 +3780,8 @@ diff -uNr foo2zjs-patch1/jbig.c foo2zjs/jbig.c
 -  }
 -  return JBG_EINVAL | 0;
 -}
-diff -uNr foo2zjs-patch1/jbig.h foo2zjs/jbig.h
---- foo2zjs-patch1/jbig.h	2008-09-05 17:06:03.000000000 +0200
+diff -uNrP foo2zjs-20110909/jbig.h foo2zjs/jbig.h
+--- foo2zjs-20110909/jbig.h	2008-09-05 16:06:03.000000000 +0100
 +++ foo2zjs/jbig.h	1970-01-01 01:00:00.000000000 +0100
 @@ -1,233 +0,0 @@
 -/*
@@ -4017,9 +4017,9 @@ diff -uNr foo2zjs-patch1/jbig.h foo2zjs/jbig.h
 -int jbg_newlen(unsigned char *bie, size_t len);
 -
 -#endif /* JBG_H */
-diff -uNr foo2zjs-patch1/Makefile foo2zjs/Makefile
---- foo2zjs-patch1/Makefile	2011-06-03 23:05:12.000000000 +0200
-+++ foo2zjs/Makefile	2011-06-07 23:13:42.242002026 +0200
+diff -uNrP foo2zjs-20110909/Makefile foo2zjs/Makefile
+--- foo2zjs-20110909/Makefile	2011-07-31 14:28:43.000000000 +0100
++++ foo2zjs/Makefile	2011-10-05 14:41:17.639211316 +0100
 @@ -19,7 +19,6 @@
  # Installation prefix...
  PREFIX=/usr/local
@@ -4057,7 +4057,7 @@ diff -uNr foo2zjs-patch1/Makefile foo2zjs/Makefile
  BINPROGS=
  
  ifeq ($(UNAME),Linux)
-@@ -420,29 +415,29 @@
+@@ -437,29 +432,29 @@
  	@echo "yourself."
  
  
@@ -4095,7 +4095,7 @@ diff -uNr foo2zjs-patch1/Makefile foo2zjs/Makefile
  	$(CC) $(CFLAGS) -o $@ foo2hiperc.o $(LIBJBG)
  
  
-@@ -510,40 +505,40 @@
+@@ -527,40 +522,40 @@
  	cd osx-hotplug; $(MAKE) all
  endif
  
@@ -4148,7 +4148,7 @@ diff -uNr foo2zjs-patch1/Makefile foo2zjs/Makefile
  	$(CC) $(CFLAGS) zjsdecode.o $(LIBJBG) -o $@
  
  command2foo2lava-pjl: command2foo2lava-pjl.o
-@@ -834,9 +829,9 @@
+@@ -851,9 +846,9 @@
  	    done; \
  	fi
  
@@ -4161,7 +4161,7 @@ diff -uNr foo2zjs-patch1/Makefile foo2zjs/Makefile
  
  install-desktop:
  	#
-@@ -1051,7 +1046,7 @@
+@@ -1068,7 +1063,7 @@
  	-rm -f $(PROGS) $(BINPROGS) $(SHELLS)
  	-rm -f *.zc *.zm
  	-rm -f xxx.* xxxomatic
@@ -4170,7 +4170,7 @@ diff -uNr foo2zjs-patch1/Makefile foo2zjs/Makefile
  	-rm -f foo2oak.o oakdecode.o
  	-rm -f foo2xqx.o xqxdecode.o
  	-rm -f foo2lava.o lavadecode.o
-@@ -1078,24 +1073,24 @@
+@@ -1095,24 +1090,24 @@
  #
  # Header dependencies
  #
