@@ -1,4 +1,4 @@
-%define foo2zjs_ver 20110602
+%define foo2zjs_ver 20111105
 
 Name:           foo2zjs
 Version:        0.%{foo2zjs_ver}
@@ -9,12 +9,16 @@ Group:          System Environment/Libraries
 License:        GPLv2
 URL:            http://foo2zjs.rkkda.com/
 
+# command : wget -O foo2zjs-20111105.tar.gz http://foo2zjs.rkkda.com/foo2zjs.tar.gz
 Source0:        foo2zjs-%{foo2zjs_ver}.tar.gz
 Patch0:         foo2zjs-dynamic-jbig.patch
+Patch1:         foo2zjs-device-ids.patch
 BuildRoot:      %{_tmppath}/%{name}-%{version}-%{release}-root-%(%{__id_u} -n)
 
 BuildRequires:  jbigkit-devel groff ghostscript
 BuildRequires:  bc
+# For the psdriver autoprovides
+BuildRequires:  python-cups
 Requires:       lcms
 Requires:       argyllcms
 Requires(post): /bin/rm
@@ -192,6 +196,9 @@ http://foo2oak.rkkda.com/ and consider contributing.
 # Patch to use jbigkit-devel package instead of static jbig source code
 %patch0 -p1
 
+# add missing 1284 Device IDs
+%patch1 -p1
+
 # Remove jbig source code, jbigkit-devel package is used in BuildRequires
 #rm -f jbig*
 
@@ -300,6 +307,7 @@ rm -rf $RPM_BUILD_ROOT
 %{_datadir}/foomatic/db/source/printer/KONICA_MINOLTA-magicolor_1680MF.xml
 %{_datadir}/foomatic/db/source/printer/KONICA_MINOLTA-magicolor_1690MF.xml
 %{_datadir}/foomatic/db/source/printer/KONICA_MINOLTA-magicolor_4690MF.xml
+%{_datadir}/foomatic/db/source/printer/KONICA_MINOLTA-magicolor_2430_DL.xml
 %{_datadir}/foomatic/db/source/printer/Xerox-Phaser_6121MFP.xml
 %{_datadir}/cups/model/KONICA_MINOLTA-magicolor_2480_MF.ppd.gz
 %{_datadir}/cups/model/KONICA_MINOLTA-magicolor_2490_MF.ppd.gz
@@ -308,6 +316,7 @@ rm -rf $RPM_BUILD_ROOT
 %{_datadir}/cups/model/KONICA_MINOLTA-magicolor_1680MF.ppd.gz
 %{_datadir}/cups/model/KONICA_MINOLTA-magicolor_1690MF.ppd.gz
 %{_datadir}/cups/model/KONICA_MINOLTA-magicolor_4690MF.ppd.gz
+%{_datadir}/cups/model/KONICA_MINOLTA-magicolor_2430_DL.ppd.gz
 %{_datadir}/cups/model/Xerox-Phaser_6121MFP.ppd.gz
 
 
@@ -387,6 +396,20 @@ rm -rf $RPM_BUILD_ROOT
 /bin/rm -f /var/cache/foomatic/*
 
 %changelog
+* Sun Nov 6 2011 Cédric Olivier <cedric.olivier@free.fr> 0.20111105-1
+- Update to latest release
+- updated the C110 ieee1284 string
+- foomatic-db, PPDs: New printer "KONICA_MINOLTA-magicolor_2430"
+  like Minolta-magicolor_2430 except for Manufacturer
+- hplj1000: make it work with usblp and CUPS (libusb)
+- lavadecode: print the compression (JBIG or unknown)
+- lavadecode: adjust for magicolor 3730
+
+* Wed Oct 5 2011 David Woodhouse <dwmw2@infradead.org> 0.20110909-1
+- Update to latest release
+- Add Konica Minolta variant of 2430DL and 2300DL
+- BR python-cups to get foomatic autodeps working
+
 * Thu Jun 7 2011 Cédric Olivier <cedric.olivier@free.fr> 0.20110602-1
 - New program: hbpldecode for decoding Fuji-Zerox cp105b and Dell 1250c
 
