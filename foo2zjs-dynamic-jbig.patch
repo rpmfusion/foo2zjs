@@ -1,5 +1,5 @@
-diff -uNrP foo2zjs-20110909/jbig_ar.c foo2zjs/jbig_ar.c
---- foo2zjs-20110909/jbig_ar.c	2008-09-05 16:05:54.000000000 +0100
+diff -uNr foo2zjs-patch1/jbig_ar.c foo2zjs/jbig_ar.c
+--- foo2zjs-patch1/jbig_ar.c	2008-09-05 17:05:54.000000000 +0200
 +++ foo2zjs/jbig_ar.c	1970-01-01 01:00:00.000000000 +0100
 @@ -1,426 +0,0 @@
 -/*
@@ -428,8 +428,8 @@ diff -uNrP foo2zjs-20110909/jbig_ar.c foo2zjs/jbig_ar.c
 -
 -  return pix;
 -}
-diff -uNrP foo2zjs-20110909/jbig_ar.h foo2zjs/jbig_ar.h
---- foo2zjs-20110909/jbig_ar.h	2008-09-05 16:05:54.000000000 +0100
+diff -uNr foo2zjs-patch1/jbig_ar.h foo2zjs/jbig_ar.h
+--- foo2zjs-patch1/jbig_ar.h	2008-09-05 17:05:54.000000000 +0200
 +++ foo2zjs/jbig_ar.h	1970-01-01 01:00:00.000000000 +0100
 @@ -1,55 +0,0 @@
 -/*
@@ -487,8 +487,8 @@ diff -uNrP foo2zjs-20110909/jbig_ar.h foo2zjs/jbig_ar.h
 -int  arith_decode(struct jbg_ardec_state *s, int cx);
 -
 -#endif /* JBG_AR_H */
-diff -uNrP foo2zjs-20110909/jbig.c foo2zjs/jbig.c
---- foo2zjs-20110909/jbig.c	2011-06-09 12:54:12.000000000 +0100
+diff -uNr foo2zjs-patch1/jbig.c foo2zjs/jbig.c
+--- foo2zjs-patch1/jbig.c	2011-06-09 13:54:12.000000000 +0200
 +++ foo2zjs/jbig.c	1970-01-01 01:00:00.000000000 +0100
 @@ -1,3289 +0,0 @@
 -/*
@@ -3780,8 +3780,8 @@ diff -uNrP foo2zjs-20110909/jbig.c foo2zjs/jbig.c
 -  }
 -  return JBG_EINVAL | 0;
 -}
-diff -uNrP foo2zjs-20110909/jbig.h foo2zjs/jbig.h
---- foo2zjs-20110909/jbig.h	2008-09-05 16:06:03.000000000 +0100
+diff -uNr foo2zjs-patch1/jbig.h foo2zjs/jbig.h
+--- foo2zjs-patch1/jbig.h	2008-09-05 17:06:03.000000000 +0200
 +++ foo2zjs/jbig.h	1970-01-01 01:00:00.000000000 +0100
 @@ -1,233 +0,0 @@
 -/*
@@ -4017,9 +4017,9 @@ diff -uNrP foo2zjs-20110909/jbig.h foo2zjs/jbig.h
 -int jbg_newlen(unsigned char *bie, size_t len);
 -
 -#endif /* JBG_H */
-diff -uNrP foo2zjs-20110909/Makefile foo2zjs/Makefile
---- foo2zjs-20110909/Makefile	2011-07-31 14:28:43.000000000 +0100
-+++ foo2zjs/Makefile	2011-10-05 14:41:17.639211316 +0100
+diff -uNr foo2zjs-patch1/Makefile foo2zjs/Makefile
+--- foo2zjs-patch1/Makefile	2011-11-05 21:45:25.000000000 +0100
++++ foo2zjs/Makefile	2011-11-06 10:45:02.857590089 +0100
 @@ -19,7 +19,6 @@
  # Installation prefix...
  PREFIX=/usr/local
@@ -4062,40 +4062,40 @@ diff -uNrP foo2zjs-20110909/Makefile foo2zjs/Makefile
  
  
 -foo2zjs: foo2zjs.o $(LIBJBG)
-+foo2zjs: foo2zjs.o 
++foo2zjs: foo2zjs.o
  	$(CC) $(CFLAGS) -o $@ foo2zjs.o $(LIBJBG)
  
 -foo2hp: foo2hp.o $(LIBJBG)
-+foo2hp: foo2hp.o 
++foo2hp: foo2hp.o
  	# $(CC) $(CFLAGS) -o $@ foo2hp.o $(LIBJBG) /usr/local/lib/libdmalloc.a
  	$(CC) $(CFLAGS) -o $@ foo2hp.o $(LIBJBG)
  
 -foo2xqx: foo2xqx.o $(LIBJBG)
-+foo2xqx: foo2xqx.o 
++foo2xqx: foo2xqx.o
  	$(CC) $(CFLAGS) -o $@ foo2xqx.o $(LIBJBG)
  
 -foo2lava: foo2lava.o $(LIBJBG)
-+foo2lava: foo2lava.o 
++foo2lava: foo2lava.o
  	$(CC) $(CFLAGS) -o $@ foo2lava.o $(LIBJBG)
  
 -foo2qpdl: foo2qpdl.o $(LIBJBG)
-+foo2qpdl: foo2qpdl.o 
++foo2qpdl: foo2qpdl.o
  	$(CC) $(CFLAGS) -o $@ foo2qpdl.o $(LIBJBG)
  
 -foo2oak: foo2oak.o $(LIBJBG)
-+foo2oak: foo2oak.o 
++foo2oak: foo2oak.o
  	$(CC) $(CFLAGS) -o $@ foo2oak.o $(LIBJBG)
  
 -foo2slx: foo2slx.o $(LIBJBG)
-+foo2slx: foo2slx.o 
++foo2slx: foo2slx.o
  	$(CC) $(CFLAGS) -o $@ foo2slx.o $(LIBJBG)
  
 -foo2hiperc: foo2hiperc.o $(LIBJBG)
-+foo2hiperc: foo2hiperc.o 
++foo2hiperc: foo2hiperc.o
  	$(CC) $(CFLAGS) -o $@ foo2hiperc.o $(LIBJBG)
  
  
-@@ -527,40 +522,40 @@
+@@ -533,40 +528,40 @@
  	cd osx-hotplug; $(MAKE) all
  endif
  
@@ -4104,51 +4104,51 @@ diff -uNrP foo2zjs-20110909/Makefile foo2zjs/Makefile
  	$(CC) $(CFLAGS) ok.o $(LIBJBG) -o $@
  
 -gipddecode: gipddecode.o $(LIBJBG)
-+gipddecode: gipddecode.o 
++gipddecode: gipddecode.o
  	$(CC) $(CFLAGS) gipddecode.o $(LIBJBG) -o $@
  
 -hbpldecode: hbpldecode.o $(LIBJBG)
-+hbpldecode: hbpldecode.o 
++hbpldecode: hbpldecode.o
  	$(CC) $(CFLAGS) hbpldecode.o $(LIBJBG) -o $@
  
 -hipercdecode: hipercdecode.o $(LIBJBG)
-+hipercdecode: hipercdecode.o 
++hipercdecode: hipercdecode.o
  	$(CC) $(CFLAGS) hipercdecode.o $(LIBJBG) -o $@
  
 -lavadecode: lavadecode.o $(LIBJBG)
-+lavadecode: lavadecode.o 
++lavadecode: lavadecode.o
  	$(CC) $(CFLAGS) lavadecode.o $(LIBJBG) -o $@
  
 -oakdecode: oakdecode.o $(LIBJBG)
-+oakdecode: oakdecode.o 
++oakdecode: oakdecode.o
  	$(CC) $(CFLAGS) -g oakdecode.o $(LIBJBG) -o $@
  
 -opldecode: opldecode.o $(LIBJBG)
-+opldecode: opldecode.o 
++opldecode: opldecode.o
  	$(CC) $(CFLAGS) -g opldecode.o $(LIBJBG) -o $@
  
 -qpdldecode: qpdldecode.o $(LIBJBG)
-+qpdldecode: qpdldecode.o 
++qpdldecode: qpdldecode.o
  	$(CC) $(CFLAGS) qpdldecode.o $(LIBJBG) -o $@
  
 -splcdecode: splcdecode.o $(LIBJBG)
-+splcdecode: splcdecode.o 
++splcdecode: splcdecode.o
  	$(CC) $(CFLAGS) splcdecode.o $(LIBJBG) -lz -o $@
  
 -slxdecode: slxdecode.o $(LIBJBG)
-+slxdecode: slxdecode.o 
++slxdecode: slxdecode.o
  	$(CC) $(CFLAGS) slxdecode.o $(LIBJBG) -o $@
  
 -xqxdecode: xqxdecode.o $(LIBJBG)
-+xqxdecode: xqxdecode.o 
++xqxdecode: xqxdecode.o
  	$(CC) $(CFLAGS) xqxdecode.o $(LIBJBG) -o $@
  
 -zjsdecode: zjsdecode.o $(LIBJBG)
-+zjsdecode: zjsdecode.o 
++zjsdecode: zjsdecode.o
  	$(CC) $(CFLAGS) zjsdecode.o $(LIBJBG) -o $@
  
  command2foo2lava-pjl: command2foo2lava-pjl.o
-@@ -851,9 +846,9 @@
+@@ -857,9 +852,9 @@
  	    done; \
  	fi
  
@@ -4161,7 +4161,7 @@ diff -uNrP foo2zjs-20110909/Makefile foo2zjs/Makefile
  
  install-desktop:
  	#
-@@ -1068,7 +1063,7 @@
+@@ -1086,7 +1081,7 @@
  	-rm -f $(PROGS) $(BINPROGS) $(SHELLS)
  	-rm -f *.zc *.zm
  	-rm -f xxx.* xxxomatic
@@ -4170,7 +4170,7 @@ diff -uNrP foo2zjs-20110909/Makefile foo2zjs/Makefile
  	-rm -f foo2oak.o oakdecode.o
  	-rm -f foo2xqx.o xqxdecode.o
  	-rm -f foo2lava.o lavadecode.o
-@@ -1095,24 +1090,24 @@
+@@ -1113,24 +1108,24 @@
  #
  # Header dependencies
  #
@@ -4192,24 +4192,24 @@ diff -uNrP foo2zjs-20110909/Makefile foo2zjs/Makefile
 -slxdecode.o: slx.h jbig.h
 -xqxdecode.o: xqx.h jbig.h
 -gipddecode.o: slx.h jbig.h
-+zjsdecode.o: zjs.h 
-+foo2zjs.o: zjs.h 
-+foo2oak.o: oak.h 
++zjsdecode.o: zjs.h
++foo2zjs.o: zjs.h
++foo2oak.o: oak.h
 +jbig.o: 
 +foo2hp.o: zjs.h cups.h
-+foo2xqx.o: xqx.h 
++foo2xqx.o: xqx.h
 +foo2lava.o: 
 +foo2qpdl.o: qpdl.h
-+foo2slx.o: slx.h 
++foo2slx.o: slx.h
 +foo2hiperc.o: hiperc.h
-+hipercdecode.o: hiperc.h 
++hipercdecode.o: hiperc.h
 +hbpldecode.o: 
 +lavadecode.o: 
 +qpdldecode.o: 
 +opldecode.o: 
-+slxdecode.o: slx.h 
-+xqxdecode.o: xqx.h 
-+gipddecode.o: slx.h 
++slxdecode.o: slx.h
++xqxdecode.o: xqx.h
++gipddecode.o: slx.h
  
  #
  # foo2* Regression tests
