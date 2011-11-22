@@ -2,7 +2,7 @@
 
 Name:           foo2zjs
 Version:        0.%{foo2zjs_ver}
-Release:        1%{?dist}
+Release:        2%{?dist}
 Summary:        Linux printer driver for ZjStream protocol
 
 Group:          System Environment/Libraries
@@ -213,6 +213,9 @@ rm PPD/Xerox-Phaser_6110.ppd
 # Samsung CLP-310 already included in foomatic-db package
 rm foomatic-db/printer/Samsung-CLP-310.xml
 
+# KONICA_MINOLTA-magicolor_2430_DL already included in foomatic-db package
+rm foomatic-db/printer/KONICA_MINOLTA-magicolor_2430_DL.xml
+
 %build
 make %{?_smp_mflags} CFLAGS="$RPM_OPT_FLAGS"
 
@@ -307,7 +310,6 @@ rm -rf $RPM_BUILD_ROOT
 %{_datadir}/foomatic/db/source/printer/KONICA_MINOLTA-magicolor_1680MF.xml
 %{_datadir}/foomatic/db/source/printer/KONICA_MINOLTA-magicolor_1690MF.xml
 %{_datadir}/foomatic/db/source/printer/KONICA_MINOLTA-magicolor_4690MF.xml
-%{_datadir}/foomatic/db/source/printer/KONICA_MINOLTA-magicolor_2430_DL.xml
 %{_datadir}/foomatic/db/source/printer/Xerox-Phaser_6121MFP.xml
 %{_datadir}/cups/model/KONICA_MINOLTA-magicolor_2480_MF.ppd.gz
 %{_datadir}/cups/model/KONICA_MINOLTA-magicolor_2490_MF.ppd.gz
@@ -396,6 +398,9 @@ rm -rf $RPM_BUILD_ROOT
 /bin/rm -f /var/cache/foomatic/*
 
 %changelog
+* Tue Nov 22 2011 Cédric Olivier <cedric.olivier@free.fr> 0.20111105-2
+- Remove KONICA_MINOLTA-magicolor_2430 already in foomatic-db
+
 * Sun Nov 6 2011 Cédric Olivier <cedric.olivier@free.fr> 0.20111105-1
 - Update to latest release
 - updated the C110 ieee1284 string
