@@ -2,7 +2,7 @@
 
 Name:           foo2zjs
 Version:        0.%{foo2zjs_ver}
-Release:        2%{?dist}
+Release:        3%{?dist}
 Summary:        Linux printer driver for ZjStream protocol
 
 Group:          System Environment/Libraries
@@ -398,6 +398,9 @@ rm -rf $RPM_BUILD_ROOT
 /bin/rm -f /var/cache/foomatic/*
 
 %changelog
+* Wed Feb 08 2012 Nicolas Chauvet <kwizart@gmail.com> - 0.20111105-3
+- Rebuilt for https://fedoraproject.org/wiki/Fedora_17_Mass_Rebuild
+
 * Tue Nov 22 2011 Cédric Olivier <cedric.olivier@free.fr> 0.20111105-2
 - Remove KONICA_MINOLTA-magicolor_2430 already in foomatic-db
 
