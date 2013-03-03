@@ -2,7 +2,7 @@
 
 Name:           foo2zjs
 Version:        0.%{foo2zjs_ver}
-Release:        3%{?dist}
+Release:        4%{?dist}
 Summary:        Linux printer driver for ZjStream protocol
 
 Group:          System Environment/Libraries
@@ -398,6 +398,9 @@ rm -rf $RPM_BUILD_ROOT
 /bin/rm -f /var/cache/foomatic/*
 
 %changelog
+* Sun Mar 03 2013 Nicolas Chauvet <kwizart@gmail.com> - 0.20111105-4
+- Mass rebuilt for Fedora 19 Features
+
 * Wed Feb 08 2012 Nicolas Chauvet <kwizart@gmail.com> - 0.20111105-3
 - Rebuilt for https://fedoraproject.org/wiki/Fedora_17_Mass_Rebuild
 
