@@ -1,15 +1,16 @@
-%define foo2zjs_ver 20111105
+%define foo2zjs_ver 20130618
 
 Name:           foo2zjs
 Version:        0.%{foo2zjs_ver}
-Release:        3%{?dist}
+Release:        1%{?dist}
 Summary:        Linux printer driver for ZjStream protocol
 
 Group:          System Environment/Libraries
 License:        GPLv2
 URL:            http://foo2zjs.rkkda.com/
 
-# command : wget -O foo2zjs-20111105.tar.gz http://foo2zjs.rkkda.com/foo2zjs.tar.gz
+# command : wget -O foo2zjs-20130122.tar.gz http://foo2zjs.rkkda.com/foo2zjs.tar.gz
+# command : wget -O foo2zjs-20130618.tar.gz http://foo2zjs.rkkda.com/foo2zjs.tar.gz
 Source0:        foo2zjs-%{foo2zjs_ver}.tar.gz
 Patch0:         foo2zjs-dynamic-jbig.patch
 Patch1:         foo2zjs-device-ids.patch
@@ -25,6 +26,12 @@ Requires(post): /bin/rm
 
 %package -n foo2hp
 Summary:        Linux printer driver for HP 1600, HP 2600n
+Group:          System Environment/Libraries
+Requires:       lcms foo2zjs
+Requires(post): /bin/rm
+
+%package -n foo2hbpl2
+Summary:        Linux printer driver for Dell 1355 and Xerox WorkCentre 6015
 Group:          System Environment/Libraries
 Requires:       lcms foo2zjs
 Requires(post): /bin/rm
@@ -97,6 +104,10 @@ protocols that are in use today, such as Postscript, PCL, Epson, etc.
 
 Users of this package are requested to visit the author's web page at
 http://foo2hp.rkkda.com/ and consider contributing.
+
+%description -n foo2hbpl2
+foo2hbpl2 is an open source printer driver (Experimental) for Printers: 
+Dell 1355 and Xerox WorkCentre 6015 
 
 %description -n foo2xqx 
 foo2xqx is an open source printer driver for printers that use the
@@ -284,6 +295,19 @@ rm -rf $RPM_BUILD_ROOT
 %{_datadir}/cups/model/HP-Color_LaserJet_1600.ppd.gz
 %{_datadir}/cups/model/HP-Color_LaserJet_2600n.ppd.gz
 
+%files -n foo2hbpl2
+%defattr(-,root,root,-)
+%{_bindir}/foo2hbpl2*
+%{_mandir}/man1/foo2hbpl2*
+%{_datadir}/foomatic/db/source/driver/foo2hbpl2.xml
+%{_datadir}/foomatic/db/source/opt/foo2hbpl2*.xml
+%{_datadir}/foomatic/db/source/printer/Dell-1355.xml
+%{_datadir}/foomatic/db/source/printer/Xerox-WorkCentre_6015.xml
+%{_datadir}/foomatic/db/source/printer/Fuji_Xerox-DocuPrint_CM205.xml
+%{_datadir}/cups/model/Dell-1355.ppd.gz
+%{_datadir}/cups/model/Xerox-WorkCentre_6015.ppd.gz
+%{_datadir}/cups/model/Fuji_Xerox-DocuPrint_CM205.ppd.gz
+ 
 %files -n foo2xqx
 %defattr(-,root,root,-)
 %{_bindir}/*xqx*
@@ -398,8 +422,9 @@ rm -rf $RPM_BUILD_ROOT
 /bin/rm -f /var/cache/foomatic/*
 
 %changelog
-* Wed Feb 08 2012 Nicolas Chauvet <kwizart@gmail.com> - 0.20111105-3
-- Rebuilt for https://fedoraproject.org/wiki/Fedora_17_Mass_Rebuild
+* Wed Jul 31 2013 Cédric Olivier <cedric.olivier@free.fr> 0.20130618-1
+- Update to lastest revision
+- Add New printer support : Fuji_Xerox-DocuPrint_CM205
 
 * Tue Nov 22 2011 Cédric Olivier <cedric.olivier@free.fr> 0.20111105-2
 - Remove KONICA_MINOLTA-magicolor_2430 already in foomatic-db
@@ -418,74 +443,3 @@ rm -rf $RPM_BUILD_ROOT
 - Add Konica Minolta variant of 2430DL and 2300DL
 - BR python-cups to get foomatic autodeps working
 
-* Thu Jun 7 2011 Cédric Olivier <cedric.olivier@free.fr> 0.20110602-1
-- New program: hbpldecode for decoding Fuji-Zerox cp105b and Dell 1250c
-
-* Sun Feb 13 2011 Cédric Olivier <cedric.olivier@free.fr> 0.20110210-1
-- Update to last release
-- New Printer: Olivetti d-Color P160W
-- New Printer: HP LaserJet Pro CP1025nw
-- New printers: HP LaserJet 1022n, HP LaserJet 1022nw
-- New Printer: Oki C310dn
-
-* Sat Oct 23 2010 Cedric Olivier <cedric.olivier@free.fr> 0.20101016-1
-- Update to last release
-- Remove Samsung-CLP-310.xml which conflict with foomatic-db package
-
-* Wed Sep 17 2010 Cedric Olivier <cedric.olivier@free.fr> 0.20100817-1
-- New foo2lava printer: Xerox Phaser 6121MFP (printer only)
-- Added manual page for foo2zjs-icc2ps
-
-* Thu Jul 22 2010 Cedric Olivier <cedric.olivier@free.fr> 0.20100722-1
-- New Printer: Oki C110
-- Change PPD's for Konica Minolta mc1600W, mc1680MF, mc1690MF, mc2490 MF, mc2530 DL, mc4690MF, 
-and Oki C110 if cups-devel is installed.
-- Used for reporting marker (toner) levels via PJL on foo2lava printers.
-
-* Thu May 11 2010 Cedric Olivier <cedric.olivier@free.fr> 0.20100506-2
-- add foo2zjs-dynamic-jbig patch to use jbigkit-devel package instead of static jbig source code
-
-* Fri May 07 2010 Cedric Olivier <cedric.olivier@free.fr> 0.20100506-1
-- Update to 20100506
-- New Printers: Oki C5650
-- New Printers: HP LaserJet Pro P1102, P1102w
-- New Printers: HP LaserJet Pro P1566
-- New Printers: HP LaserJet Pro P1606dn
-
-* Wed Mar 10 2010 Cedric Olivier <cedric.olivier@free.fr> 0.20100307-1
-- Update to 20100307
-- BugFix and adding new printers supports
-
-* Sat Apr 25 2009 Lubomir Rintel <lkundrak@v3.sk> 0.20080826-3
-- Add proper scriptlet requires
-
-* Sun Mar 29 2009 Thorsten Leemhuis <fedora [AT] leemhuis [DOT] info> - 0.20080826-2
-- rebuild for new F11 features
-
-* Thu Sep 04 2008 David Woodhouse <dwmw2@infradead.org> 0.20080826-1
-- Update to 20080826
-- Fixes to build with jbigkit 2.0
-- add foo2oak subpackage
-
-* Wed Mar 24 2008 David Woodhouse <dwmw2@infradead.org> 0.20080324-1
-- Update to 20080324
-- add foo2slx and foo2hiperc subpackage
-
-* Wed Aug 29 2007 David Woodhouse <dwmw2@infradead.org> 0.20070822-1
-- Update to 2007-08-22 release
-- Add foo2qpdl subpackage
-- Add %%post script to remove foomatic cache
-
-* Mon Jan 29 2007 David Woodhouse <dwmw2@infradead.org> 0.20070128-1
-- Update to 2007-01-28 release
-
-* Mon Jan 29 2007 David Woodhouse <dwmw2@infradead.org> 0.20070127-1
-- Update to 2007-01-27 release
-- Add foo2xqx, foo2lava subpackages
-- Include foomatic files which are now absent from Fedora foomatic
-
-* Wed Sep 13 2006 David Woodhouse <dwmw2@infradead.org> 0.20060929-1
-- Review fixes
-
-* Wed Sep 13 2006 David Woodhouse <dwmw2@infradead.org> 0.20060911-1
-- Initial build.
