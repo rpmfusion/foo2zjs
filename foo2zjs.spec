@@ -1,8 +1,8 @@
-%define foo2zjs_ver 20130618
+%define foo2zjs_ver 20160810
 
 Name:           foo2zjs
 Version:        0.%{foo2zjs_ver}
-Release:        2%{?dist}
+Release:        1%{?dist}
 Summary:        Linux printer driver for ZjStream protocol
 
 Group:          System Environment/Libraries
@@ -211,7 +211,7 @@ http://foo2oak.rkkda.com/ and consider contributing.
 %patch1 -p1
 
 # Remove jbig source code, jbigkit-devel package is used in BuildRequires
-#rm -f jbig*
+rm -f jbig*
 
 sed -i -e s/foo2zjs-icc2ps/icc2ps/g *wrapper*
 sed -i -e s/775/755/ Makefile
@@ -302,11 +302,25 @@ rm -rf $RPM_BUILD_ROOT
 %{_datadir}/foomatic/db/source/driver/foo2hbpl2.xml
 %{_datadir}/foomatic/db/source/opt/foo2hbpl2*.xml
 %{_datadir}/foomatic/db/source/printer/Dell-1355.xml
+%{_datadir}/foomatic/db/source/printer/Dell-C1765.xml
+%{_datadir}/foomatic/db/source/printer/Epson-AcuLaser_CX17NF.xml
+%{_datadir}/foomatic/db/source/printer/Epson-AcuLaser_M1400.xml
+%{_datadir}/foomatic/db/source/printer/Xerox-WorkCentre_3045.xml
 %{_datadir}/foomatic/db/source/printer/Xerox-WorkCentre_6015.xml
 %{_datadir}/foomatic/db/source/printer/Fuji_Xerox-DocuPrint_CM205.xml
+%{_datadir}/foomatic/db/source/printer/Fuji_Xerox-DocuPrint_CM215.xml
+%{_datadir}/foomatic/db/source/printer/Fuji_Xerox-DocuPrint_M215.xml
+%{_datadir}/foomatic/db/source/printer/Fuji_Xerox-DocuPrint_P205.xml
 %{_datadir}/cups/model/Dell-1355.ppd.gz
+%{_datadir}/cups/model/Dell-C1765.ppd.gz
+%{_datadir}/cups/model/Epson-AcuLaser_CX17NF.ppd.gz
+%{_datadir}/cups/model/Epson-AcuLaser_M1400.ppd.gz
+%{_datadir}/cups/model/Xerox-WorkCentre_3045.ppd.gz
 %{_datadir}/cups/model/Xerox-WorkCentre_6015.ppd.gz
 %{_datadir}/cups/model/Fuji_Xerox-DocuPrint_CM205.ppd.gz
+%{_datadir}/cups/model/Fuji_Xerox-DocuPrint_CM215.ppd.gz
+%{_datadir}/cups/model/Fuji_Xerox-DocuPrint_M215.ppd.gz
+%{_datadir}/cups/model/Fuji_Xerox-DocuPrint_P205.ppd.gz
  
 %files -n foo2xqx
 %defattr(-,root,root,-)
@@ -375,6 +389,7 @@ rm -rf $RPM_BUILD_ROOT
 %{_bindir}/*hiperc*
 %{_mandir}/man1/*hiperc*
 %{_datadir}/foomatic/db/source/driver/foo2hiperc.xml
+%{_datadir}/foomatic/db/source/driver/foo2hiperc-z1.xml
 %{_datadir}/foomatic/db/source/opt/foo2hiperc*.xml
 %{_datadir}/foomatic/db/source/printer/Oki-C*.xml
 %{_datadir}/cups/model/Oki-C*.ppd.gz
@@ -422,6 +437,19 @@ rm -rf $RPM_BUILD_ROOT
 /bin/rm -f /var/cache/foomatic/*
 
 %changelog
+* Wed Aug 10 2016 Leigh Scott <leigh123linux@googlemail.com> - 0.20160810-1
+- Update to lastest revision
+- Add New printer support : Dell-C1765
+- Add New printer support : Epson-AcuLaser_CX17NF
+- Add New printer support : Epson-AcuLaser_M1400
+- Add New printer support : HP-LaserJet_Pro_M1212nf
+- Add New printer support : Xerox-WorkCentre_3045
+- Add New printer support : Fuji_Xerox-DocuPrint_CM215
+- Add New printer support : Fuji_Xerox-DocuPrint_M215
+- Add New printer support : Fuji_Xerox-DocuPrint_P205
+- Add New printer support : Oki-C511dn
+- Add New printer support : Oki-C810
+
 * Sun Aug 31 2014 Sérgio Basto <sergio@serjux.com> - 0.20130618-2
 - Rebuilt for https://fedoraproject.org/wiki/Fedora_21_22_Mass_Rebuild
 
